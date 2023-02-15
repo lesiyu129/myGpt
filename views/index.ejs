@@ -20,7 +20,6 @@
         document.querySelector("#message").innerHTML=localStorage.getItem("strdata")
       }
       async function message(){
-        console.log('点击事件');
         const apikey = document.querySelector("#apikey").value
         const prompt = document.querySelector("#prompt").value
         localStorage.setItem("apikey",apikey)
