@@ -10,7 +10,9 @@
     <p>问题:</p><textarea id="prompt" style="min-width: 450px;min-height: 200px;"></textarea > 
     <p></p>
     <input type="submit" value="提交问题" onclick="message()">
+    <pre>
     <div id="message"></div>
+    </pre>
   </body>
   <script src="https://cdn.jsdelivr.net/npm/axios@1.1.2/dist/axios.min.js"></script>
   <script>
@@ -42,7 +44,7 @@
           res.data.message.choices.forEach(element => {
             str += element.text
           });
-          document.querySelector("#message").innerHTML=str.replace(/[\r\n]/g,'<br/>')
+          document.querySelector("#message").innerHTML=str
           localStorage.setItem("strdata",str)
           console.log(res);
         }).catch(err=>{
