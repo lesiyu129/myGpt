@@ -42,7 +42,7 @@
           res.data.message.choices.forEach(element => {
             str += element.text
           });
-          document.querySelector("#message").innerHTML=str
+          document.querySelector("#message").innerHTML=str.replace(/[\r\n]/g,'<br/>')
           localStorage.setItem("strdata",str)
           console.log(res);
         }).catch(err=>{
