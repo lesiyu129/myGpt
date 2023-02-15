@@ -6,6 +6,7 @@ class gpt {
         const body = ctx.request.body;
         const prompt = body.prompt;
         const apiKey = body.apiKey;
+        const promptStr = `\n${prompt}`;
         if (!apiKey) {
             throw new MyError({ code: code.notKey, message: 'apiKey不能为空' });
         }
@@ -15,13 +16,15 @@ class gpt {
         const openai = new OpenAIApi(configuration);
         try {
             const response = await openai.createCompletion({
+                best_of: 1,
                 model: "text-davinci-003",
-                prompt: prompt,
-                temperature: 0,
-                max_tokens: 100,
+                prompt: promptStr,
+                temperature: 0.5,
+                max_tokens: 2038,
                 top_p: 1,
                 frequency_penalty: 0.0,
                 presence_penalty: 0.0,
+                // stop: "\n"
             });
             ctx.body = { code: code.ok, message: response.data };
         } catch (error) {

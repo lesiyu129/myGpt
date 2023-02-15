@@ -22,6 +22,7 @@
       async function message(){
         const apikey = document.querySelector("#apikey").value
         const prompt = document.querySelector("#prompt").value
+        document.querySelector("#message").innerHTML="网络延迟很大。请耐心等待！！！"
         localStorage.setItem("apikey",apikey)
         localStorage.setItem("prompt",prompt)
         const data = {
