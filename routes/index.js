@@ -2,7 +2,7 @@ const router = require('koa-router')();
 const gpt = require('../contorller/gpt');
 router.get('/', async (ctx, next) => {
   await ctx.render('index', {
-    title: 'Hello Koa 2!'
+    title: 'Hello ChatGPT'
   });
 });
 router.post('/message', async (ctx, next) => {

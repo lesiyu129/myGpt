@@ -6,6 +6,48 @@
   </head>
   <body>
     <h1><%= title %></h1>
-    <p>EJS Welcome to <%= title %></p>
+    <p>key:</p><input type="text" name="" id="apikey">
+    <p>问题:</p><input type="text" name="" id="prompt">
+    <p></p>
+    <input type="submit" value="提交问题" onclick="message()">
+    <div id="message"></div>
   </body>
+  <script src="https://cdn.jsdelivr.net/npm/axios@1.1.2/dist/axios.min.js"></script>
+  <script>
+      window.onload=function(){
+        document.querySelector("#apikey").value = localStorage.getItem("apikey")
+        document.querySelector("#prompt").value = localStorage.getItem("prompt")
+        document.querySelector("#message").innerHTML=localStorage.getItem("strdata")
+      }
+      async function message(){
+        console.log('点击事件');
+        const apikey = document.querySelector("#apikey").value
+        const prompt = document.querySelector("#prompt").value
+        localStorage.setItem("apikey",apikey)
+        localStorage.setItem("prompt",prompt)
+        const data = {
+          apiKey:apikey,
+          prompt:prompt
+        }
+        const config = {
+          method: 'post',
+          url: '/message',
+          headers: { 
+            'Content-Type': 'application/x-www-form-urlencoded'
+          },
+          data : data
+        }
+        axios(config).then(res=>{
+          let str = ''
+          res.data.message.choices.forEach(element => {
+            str += element.text
+          });
+          document.querySelector("#message").innerHTML=str
+          localStorage.setItem("strdata",str)
+          console.log(res);
+        }).catch(err=>{
+          console.error(error);
+        })
+      }
+  </script>
 </html>
