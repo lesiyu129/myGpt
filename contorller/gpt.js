@@ -37,7 +37,8 @@ class gpt {
     async wachan(ctx){
         const query = ctx.request.query;
         const {signature,timestamp,nonce,echostr} = query
-        const soltStr = [timestamp,nonce,echostr].solt().join('')
+        const token = 'incar2023chatgpt'
+        const soltStr = [timestamp,nonce,token].solt().join('')
         const sha1Str = sha1(soltStr)
         if (sha1Str === signature) {
             res.send(echostr)
