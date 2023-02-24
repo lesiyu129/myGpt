@@ -3,6 +3,7 @@ const { code } = require("../config/code");
 const MyError = require("../unit/myError");
 const crypto = require("crypto");
 const sha1 = require("sha1");
+const wx = require('../unit/wx');
 
 class gpt {
     constructor() {
@@ -40,6 +41,7 @@ class gpt {
                     // stop: "\n"
                 });
                 return response.data;
+
             } catch (error) {
                 return error;
             }
@@ -88,25 +90,57 @@ class gpt {
         }
     }
     async sendMessage(ctx) {
-        const { xml } = ctx.req.body;
-        const { ToUserName, FromUserName, CreateTime, MsgType, Content, MsgId } = xml;
-        if (MsgType == 'text') {
-            const responseMSg = await this.message(Content[0], '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');
-            let str = '';
-            if (responseMSg.isAxiosError) {
-                console.log("responseMSg返回结果", `发生错误:${responseMSg}`);
-                ctx.body = this.sendMsg(xml, '机器人正在检修中');
-            } else {
-                // responseMSg.choices.forEach(element => {
-                //     str += element.text;
-                // });
-                str = responseMSg.choices[0].text
-                console.log("responseMSg返回结果", `成功了:${str}`);
-                ctx.body = this.sendMsg(xml, str);
-            }
-        } else {
-            ctx.body = this.sendMsg(xml, '机器人正在检修中');
+        let msg, MsgType, result, str;
+        msg = ctx.req.body ? ctx.req.body.xml : '';
+        if (!msg) {
+            ctx.body = 'error request.';
+            return;
         }
+        MsgType = msg.MsgType[0];
+        switch (MsgType) {
+            case 'text':
+                const responseMSg = await this.message(msg.Content[0], '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');
+                if (responseMSg.isAxiosError) {
+                    console.log("responseMSg返回结果", `发生错误:${responseMSg}`);
+                    result = wx.message.text(msg, '机器人正在检修中');
+                } else {
+                    // responseMSg.choices.forEach(element => {
+                    //     str += element.text;
+                    // });
+                    str = responseMSg.choices[0].text;
+                    console.log("responseMSg返回结果", `成功了:${str}`);
+                    result = wx.message.text(msg, str);
+                }
+
+
+                break;
+
+            default:
+                result = 'success';
+
+        }
+        
+        ctx.set('Content-Type', 'application/xml');
+        ctx.res.end(result);
+        // const { xml } = ctx.req.body;
+        // const { ToUserName, FromUserName, CreateTime, MsgType, Content, MsgId } = xml;
+        // if (MsgType == 'text') {
+        //     const responseMSg = await this.message(Content[0], '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');
+        //     let str = '';
+        //     if (responseMSg.isAxiosError) {
+        //         console.log("responseMSg返回结果", `发生错误:${responseMSg}`);
+        //         ctx.body = this.sendMsg(xml, '机器人正在检修中');
+        //     } else {
+        //         // responseMSg.choices.forEach(element => {
+        //         //     str += element.text;
+        //         // });
+        //         str = responseMSg.choices[0].text
+        //         console.log("responseMSg返回结果", `成功了:${str}`);
+        //         ctx.body = this.sendMsg(xml, str);
+        //     }
+        // } else {
+        //     ctx.body = this.sendMsg(xml, '机器人正在检修中');
+        // }
     }
 }
 

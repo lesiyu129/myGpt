@@ -4,7 +4,7 @@ module.exports = () => {
 
     return async (ctx, next) => {
 
-        if (ctx.method == 'POST' && ctx.is('text/xml') ) {
+        if (ctx.method == 'POST' && ctx.is('text/xml')) {
 
             let promise = new Promise(function (resolve, reject) {
 
@@ -42,7 +42,7 @@ module.exports = () => {
 
                 });
 
-            next();
+            await next();
 
         } else {
 
