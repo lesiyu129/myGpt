@@ -97,9 +97,10 @@ class gpt {
                 console.log("responseMSg返回结果", `发生错误:${responseMSg}`);
                 ctx.body = this.sendMsg(xml, '机器人正在检修中');
             } else {
-                responseMSg.choices.forEach(element => {
-                    str += element.text;
-                });
+                // responseMSg.choices.forEach(element => {
+                //     str += element.text;
+                // });
+                str = responseMSg.choices[0].text
                 console.log("responseMSg返回结果", `成功了:${str}`);
                 ctx.body = this.sendMsg(xml, str);
             }
