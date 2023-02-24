@@ -10,8 +10,8 @@ class gpt {
             const { ToUserName, FromUserName } = xml;
             return `
           <xml>
-            <ToUserName><![CDATA[${FromUserName}]]></ToUserName>
-            <FromUserName><![CDATA[${ToUserName}]]></FromUserName>
+            <ToUserName><![CDATA[${FromUserName[0]}]]></ToUserName>
+            <FromUserName><![CDATA[${ToUserName[0]}]]></FromUserName>
             <CreateTime>${new Date().getTime()}</CreateTime>
             <MsgType><![CDATA[text]]></MsgType>
             <Content><![CDATA[${msg}]]></Content>
@@ -94,12 +94,13 @@ class gpt {
             const responseMSg = await this.message(Content[0], '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');
             let str = '';
             if (responseMSg.isAxiosError) {
+                console.log("responseMSg返回结果", `发生错误:${responseMSg}`);
                 ctx.body = this.sendMsg(xml, '机器人正在检修中');
             } else {
                 responseMSg.choices.forEach(element => {
                     str += element.text;
                 });
-
+                console.log("responseMSg返回结果", `成功了:${str}`);
                 ctx.body = this.sendMsg(xml, str);
             }
         } else {
