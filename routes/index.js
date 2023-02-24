@@ -1,5 +1,6 @@
 const router = require('koa-router')();
 const gpt = require('../contorller/gpt');
+const xmlParse = require('../unit/xmlParse');
 router.get('/', async (ctx, next) => {
   await ctx.render('index', {
     title: 'Hello ChatGPT'
@@ -14,7 +15,7 @@ router.get('/string', async (ctx, next) => {
 router.get('/wechat', async (ctx, next) => {
   await gpt.wechat(ctx, next);
 });
-router.post('/wechat', async (ctx, next) => {
+router.post('/wechat', xmlParse(), async (ctx, next) => {
   await gpt.sendMessage(ctx, next);
 });
 router.get('/json', async (ctx, next) => {

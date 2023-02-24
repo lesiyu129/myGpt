@@ -3,22 +3,20 @@ const { code } = require("../config/code");
 const MyError = require("../unit/myError");
 const crypto = require("crypto")
 const sha1 = require("sha1");
-const xml2js = require("xml2js");
-const xmlParse = xml2js.parseString
 
 class gpt {
     constructor(){
-        this.sendMsg = (xml,msg)=>{
-            const { ToUserName, FromUserName } = xml
+        this.sendMsg = (xml, msg) => {
+            const { ToUserName, FromUserName } = xml;
             return `
-            <xml>
-                <ToUserName><![CDATA[${FromUserName}]]></ToUserName>
-                <FromUserName><![CDATA[${ToUserName}]]></FromUserName>
-                <CreateTime>${new Date().getTime()}</CreateTime>
-                <MsgType><![CDATA[text]]></MsgType>
-                <Content><![CDATA[${msg}]]></Content>
-            </xml>
-            `
+          <xml>
+            <ToUserName><![CDATA[${FromUserName}]]></ToUserName>
+            <FromUserName><![CDATA[${ToUserName}]]></FromUserName>
+            <CreateTime>${new Date().getTime()}</CreateTime>
+            <MsgType><![CDATA[text]]></MsgType>
+            <Content><![CDATA[${msg}]]></Content>
+          </xml>
+         `;
         }
     }
     async request(ctx) {
@@ -65,16 +63,16 @@ class gpt {
     }
     async sendMessage(ctx){
         const body = ctx.request.body;
-        const {data} = body
-        xmlParse(data,(err,{xml})=>{
-            const { ToUserName, FromUserName, CreateTime, MsgType, Content, MsgId } = xml
-            if(MsgType == 'text'){
-                if (Content == 'hello') {
-                    const responseMSg = 'world'
-                    ctx.body = this.sendMsg(xml, responseMSg)
-                  }
+        const {xml} = body 
+        const { ToUserName, FromUserName, CreateTime, MsgType, Content, MsgId } = xml
+        if (MsgType == 'text') {
+            if (Content == 'hello') {
+                const responseMSg = 'world';
+                ctx.res.setHeader('Content-Type', 'application/xml')
+                ctx.res.end(sendMsg(xml, responseMSg))
             }
-        })
+        } 
+        console.log(ctx);
     }
 }
 
