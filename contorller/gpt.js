@@ -91,12 +91,17 @@ class gpt {
         const { xml } = ctx.req.body;
         const { ToUserName, FromUserName, CreateTime, MsgType, Content, MsgId } = xml;
         if (MsgType == 'text') {
-            const responseMSg = await this.message(Content[0], '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');
-            let str = ''
-            responseMSg.choices.forEach(element => {
-                str += element.text;
-            })
-            ctx.body = this.sendMsg(xml, str);
+            const responseMSg = await this.message(Content[0], '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');
+            let str = '';
+            if (responseMSg.isAxiosError) {
+                ctx.body = this.sendMsg(xml, '机器人正在检修中');
+            } else {
+                responseMSg.choices.forEach(element => {
+                    str += element.text;
+                });
+
+                ctx.body = this.sendMsg(xml, str);
+            }
         } else {
             ctx.body = this.sendMsg(xml, '机器人正在检修中');
         }
