@@ -109,7 +109,7 @@ class gpt {
                     // });
                     str = responseMSg.choices[0].text;
                     console.log("responseMSg返回结果", `成功了:${str}`);
-                    result = wx.message.text(msg, str);
+                    result = this.sendMsg(msg, str);
                 }
 
 
@@ -120,8 +120,8 @@ class gpt {
 
         }
         
-        ctx.set('Content-Type', 'application/xml');
-        ctx.res.end(result);
+        // ctx.set('Content-Type', 'application/xml');
+        ctx.body=result;
         // const { xml } = ctx.req.body;
         // const { ToUserName, FromUserName, CreateTime, MsgType, Content, MsgId } = xml;
         // if (MsgType == 'text') {
