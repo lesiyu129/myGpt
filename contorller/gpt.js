@@ -1,6 +1,8 @@
 const { Configuration, OpenAIApi } = require("openai");
 const { code } = require("../config/code");
 const MyError = require("../unit/myError");
+const crypto = require("crypto")
+const sha1 = require("sha1");
 class gpt {
     async request(ctx) {
         const body = ctx.request.body;
@@ -31,6 +33,17 @@ class gpt {
             ctx.body = { code: code.err, message: error };
         }
 
+    }
+    async wachan(ctx){
+        const query = ctx.request.query;
+        const {signature,timestamp,nonce,echostr} = query
+        const soltStr = [timestamp,nonce,echostr].solt().join('')
+        const sha1Str = sha1(soltStr)
+        if (sha1Str === signature) {
+            res.send(echostr)
+          } else {
+            console.log('error')
+        }
     }
 }
 
