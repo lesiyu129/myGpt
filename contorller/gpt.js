@@ -71,7 +71,10 @@ class gpt {
                 ctx.res.setHeader('Content-Type', 'application/xml')
                 ctx.res.end(sendMsg(xml, responseMSg))
             }
+        }else {
+            ctx.body = '机器人正在检修中'
         } 
+
         console.log(ctx);
     }
 }
