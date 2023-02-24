@@ -69,7 +69,7 @@ class gpt {
             if (Content == 'hello') {
                 const responseMSg = 'world';
                 ctx.res.setHeader('Content-Type', 'application/xml')
-                ctx.res.end(sendMsg(xml, responseMSg))
+                ctx.res.end(this.sendMsg(xml, responseMSg))
             }
         }else {
             ctx.body = '机器人正在检修中'
