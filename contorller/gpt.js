@@ -35,7 +35,7 @@ class gpt {
 
     }
     async wechat(ctx){
-        const query = ctx.request.query;
+        const query = ctx.query;
         const {signature,timestamp,nonce,echostr} = query
         const token = 'incar2023chatgpt'
         const soltStr = [nonce,timestamp,token].sort().join('')
