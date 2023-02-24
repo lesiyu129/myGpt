@@ -62,8 +62,7 @@ class gpt {
         }
     }
     async sendMessage(ctx){
-        const body = ctx.request.body;
-        const {xml} = body 
+        const { xml } = ctx.req.body 
         const { ToUserName, FromUserName, CreateTime, MsgType, Content, MsgId } = xml
         if (MsgType == 'text') {
             if (Content == 'hello') {
