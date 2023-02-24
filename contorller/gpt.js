@@ -41,7 +41,7 @@ class gpt {
         const soltStr = [nonce,timestamp,token].sort().join('')
         const sha1Str = sha1(soltStr)
         if (sha1Str === signature) {
-            res.send(echostr)
+            ctx.body = echostr
           } else {
             console.log('error')
         }
