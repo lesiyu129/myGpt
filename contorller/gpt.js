@@ -67,8 +67,8 @@ class gpt {
         if (MsgType == 'text') {
             if (Content == 'hello') {
                 const responseMSg = 'world';
-                ctx.res.setHeader('Content-Type', 'application/xml')
-                ctx.res.end(this.sendMsg(xml, responseMSg))
+                // ctx.res.setHeader('Content-Type', 'text/xml')
+                ctx.body=this.sendMsg(xml, responseMSg)
             }
         }else {
             ctx.body = '机器人正在检修中'
