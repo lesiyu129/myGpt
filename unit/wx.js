@@ -8,15 +8,15 @@ exports.message = {
 
             xml: {
 
-                ToUserName: msg.FromUserName,
+                ToUserName: `<![CDATA[${msg.FromUserName}]]>` ,
 
-                FromUserName: msg.ToUserName,
+                FromUserName: `<![CDATA[${msg.ToUserName}]]>`,
 
                 CreateTime: Date.now(),
 
-                MsgType: msg.MsgType,
+                MsgType: `<![CDATA[text]]>`,
 
-                Content: content
+                Content: `<Content><![CDATA[${content}]]></Content>`
 
             }
 
