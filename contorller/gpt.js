@@ -3,7 +3,6 @@ const { code } = require("../config/code");
 const MyError = require("../unit/myError");
 const crypto = require("crypto");
 const sha1 = require("sha1");
-const wx = require('../unit/wx');
 
 class gpt {
     constructor() {
