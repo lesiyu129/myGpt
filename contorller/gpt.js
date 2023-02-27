@@ -99,6 +99,7 @@ class gpt {
         MsgType = msg.MsgType[0];
         switch (MsgType) {
             case 'text':
+                str = ''
                 const responseMSg = await this.message(msg.Content[0], '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');
                 if (responseMSg.isAxiosError) {
                     console.error("responseMsg返回结果", `发生错误:${responseMSg}`);
