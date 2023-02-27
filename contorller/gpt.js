@@ -101,18 +101,16 @@ class gpt {
             case 'text':
                 const responseMSg = await this.message(msg.Content[0], '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');
                 if (responseMSg.isAxiosError) {
-                    console.log("responseMSg返回结果", `发生错误:${responseMSg}`);
+                    console.error("responseMsg返回结果", `发生错误:${responseMSg}`);
                     result = wx.message.text(msg, '机器人正在检修中');
                 } else {
-                    // responseMSg.choices.forEach(element => {
-                    //     str += element.text;
-                    // });
-                    str = responseMSg.choices[0].text;
-                    console.log("responseMSg返回结果", `成功了:${str}`);
+                    const choices = responseMSg.choices
+                    for (const iterator of choices) {
+                        str +=iterator.text
+                    }
+                    console.info("responseMsg返回结果", `成功了:${str}`);
                     result = this.sendMsg(msg, str);
                 }
-
-
                 break;
 
             default:
