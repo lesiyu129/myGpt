@@ -7,18 +7,18 @@ const wx = require('../unit/wx');
 
 class gpt {
     constructor() {
-        // this.sendMsg = (xml, msg) => {
-        //     const { ToUserName, FromUserName } = xml;
-        //     return `
-        //   <xml>
-        //     <ToUserName><![CDATA[${FromUserName[0]}]]></ToUserName>
-        //     <FromUserName><![CDATA[${ToUserName[0]}]]></FromUserName>
-        //     <CreateTime>${new Date().getTime()}</CreateTime>
-        //     <MsgType><![CDATA[text]]></MsgType>
-        //     <Content><![CDATA[${msg}]]></Content>
-        //   </xml>
-        //  `;
-        // };
+        this.sendMsg = (xml, msg) => {
+            const { ToUserName, FromUserName } = xml;
+            return `
+          <xml>
+            <ToUserName><![CDATA[${FromUserName[0]}]]></ToUserName>
+            <FromUserName><![CDATA[${ToUserName[0]}]]></FromUserName>
+            <CreateTime>${new Date().getTime()}</CreateTime>
+            <MsgType><![CDATA[text]]></MsgType>
+            <Content><![CDATA[${msg}]]></Content>
+          </xml>
+         `;
+        };
         this.message = async (prompt, apiKey) => {
             const promptStr = `\n${prompt}`;
             if (!apiKey) {
@@ -102,14 +102,14 @@ class gpt {
                 const responseMSg = await this.message(msg.Content[0], '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');
                 if (responseMSg.isAxiosError) {
                     console.error("responseMsg返回结果", `发生错误:${responseMSg}`);
-                    result = wx.message.text(msg, '机器人正在检修中');
+                    result = this.sendMsg(msg, '机器人陷入了沉思');
                 } else {
                     const choices = responseMSg.choices
                     for (const iterator of choices) {
                         str +=iterator.text
                     }
                     console.info("responseMsg返回结果", `成功了:${str}`);
-                    result = wx.message.text(msg, str);
+                    result = this.sendMsg(msg, str);
                 }
                 break;
 
