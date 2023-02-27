@@ -7,18 +7,18 @@ const wx = require('../unit/wx');
 
 class gpt {
     constructor() {
-        this.sendMsg = (xml, msg) => {
-            const { ToUserName, FromUserName } = xml;
-            return `
-          <xml>
-            <ToUserName><![CDATA[${FromUserName[0]}]]></ToUserName>
-            <FromUserName><![CDATA[${ToUserName[0]}]]></FromUserName>
-            <CreateTime>${new Date().getTime()}</CreateTime>
-            <MsgType><![CDATA[text]]></MsgType>
-            <Content><![CDATA[${msg}]]></Content>
-          </xml>
-         `;
-        };
+        // this.sendMsg = (xml, msg) => {
+        //     const { ToUserName, FromUserName } = xml;
+        //     return `
+        //   <xml>
+        //     <ToUserName><![CDATA[${FromUserName[0]}]]></ToUserName>
+        //     <FromUserName><![CDATA[${ToUserName[0]}]]></FromUserName>
+        //     <CreateTime>${new Date().getTime()}</CreateTime>
+        //     <MsgType><![CDATA[text]]></MsgType>
+        //     <Content><![CDATA[${msg}]]></Content>
+        //   </xml>
+        //  `;
+        // };
         this.message = async (prompt, apiKey) => {
             const promptStr = `\n${prompt}`;
             if (!apiKey) {
@@ -109,7 +109,7 @@ class gpt {
                         str +=iterator.text
                     }
                     console.info("responseMsg返回结果", `成功了:${str}`);
-                    result = this.sendMsg(msg, str);
+                    result = wx.message.text(msg, str);
                 }
                 break;
 
@@ -117,28 +117,7 @@ class gpt {
                 result = 'success';
 
         }
-        
-        // ctx.set('Content-Type', 'application/xml');
         ctx.body=result;
-        // const { xml } = ctx.req.body;
-        // const { ToUserName, FromUserName, CreateTime, MsgType, Content, MsgId } = xml;
-        // if (MsgType == 'text') {
-        //     const responseMSg = await this.message(Content[0], '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');
-        //     let str = '';
-        //     if (responseMSg.isAxiosError) {
-        //         console.log("responseMSg返回结果", `发生错误:${responseMSg}`);
-        //         ctx.body = this.sendMsg(xml, '机器人正在检修中');
-        //     } else {
-        //         // responseMSg.choices.forEach(element => {
-        //         //     str += element.text;
-        //         // });
-        //         str = responseMSg.choices[0].text
-        //         console.log("responseMSg返回结果", `成功了:${str}`);
-        //         ctx.body = this.sendMsg(xml, str);
-        //     }
-        // } else {
-        //     ctx.body = this.sendMsg(xml, '机器人正在检修中');
-        // }
     }
 }
 
