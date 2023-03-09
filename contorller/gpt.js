@@ -50,7 +50,7 @@ class gpt {
         const body = ctx.request.body;
         const prompt = body.prompt;
         const apiKey = body.apiKey;
-        const promptStr = `\n${prompt}`;
+        const promptStr = `\n ${prompt}`;
         if (!apiKey) {
             throw new MyError({ code: code.notKey, message: 'apiKey不能为空' });
         }
@@ -59,9 +59,10 @@ class gpt {
         });
         const openai = new OpenAIApi(configuration);
         try {
-            const response = await openai.createCompletion({
+            const response = await openai.createChatCompletion({
                 best_of: 1,
-                model: "text-davinci-003",
+                model: "gpt-3.5-turbo",
+                messages: [{ "role": "user", "content": promptStr }],
                 prompt: promptStr,
                 temperature: 0.5,
                 max_tokens: 2038,
