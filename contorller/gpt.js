@@ -50,27 +50,22 @@ class gpt {
         const body = ctx.request.body;
         const prompt = body.prompt;
         const apiKey = body.apiKey;
-        const promptStr = `\n ${prompt}`;
+        const promptStr = `${prompt}`;
         if (!apiKey) {
             throw new MyError({ code: code.notKey, message: 'apiKey不能为空' });
         }
         const configuration = new Configuration({
-            apiKey: apiKey || "apiKey"
+            apiKey: apiKey
         });
         const openai = new OpenAIApi(configuration);
         try {
             const response = await openai.createChatCompletion({
-                best_of: 1,
                 model: "gpt-3.5-turbo",
                 messages: [{ "role": "user", "content": promptStr }],
-                prompt: promptStr,
                 temperature: 0.5,
-                max_tokens: 2038,
-                top_p: 1,
-                frequency_penalty: 0.0,
-                presence_penalty: 0.0,
                 // stop: "\n"
             });
+            console.log(completion.data.choices[0].message);
             ctx.body = { code: code.ok, message: response.data };
         } catch (error) {
             ctx.body = { code: code.err, message: error };
@@ -99,15 +94,15 @@ class gpt {
         MsgType = msg.MsgType[0];
         switch (MsgType) {
             case 'text':
-                str = ''
-                const responseMSg = await this.message(msg.Content[0], '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');
+                str = '';
+                const responseMSg = await this.message(msg.Content[0], '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');
                 if (responseMSg.isAxiosError) {
                     console.error("responseMsg返回结果", `发生错误:${responseMSg}`);
                     result = this.sendMsg(msg, '机器人陷入了沉思');
                 } else {
-                    const choices = responseMSg.choices
+                    const choices = responseMSg.choices;
                     for (const iterator of choices) {
-                        str +=iterator.text
+                        str += iterator.text;
                     }
                     console.info("responseMsg返回结果", `成功了:${str}`);
                     result = this.sendMsg(msg, str);
@@ -118,7 +113,7 @@ class gpt {
                 result = 'success';
 
         }
-        ctx.body=result;
+        ctx.body = result;
     }
 }
 
